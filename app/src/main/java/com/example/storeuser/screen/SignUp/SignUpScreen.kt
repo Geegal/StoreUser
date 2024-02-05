@@ -115,7 +115,7 @@ fun SignUpScreen(navController: NavController, signUpViewModel: SignUpViewModel 
                         message = event.message ?: "Create account successfully! Please verify your email to sign in!",
                         duration = SnackbarDuration.Short
                     )
-                    delay(1300)
+                    delay(1000)
                     navController.navigate(NavScreen.SignInScreen.route){
                         popUpTo(NavScreen.SignInScreen.route){inclusive=true}
                     }

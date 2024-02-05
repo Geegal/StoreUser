@@ -38,6 +38,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -70,6 +71,8 @@ import com.example.storeuser.ui.theme.GrayBorderStroke
 import com.example.storeuser.ui.theme.Green
 import com.example.storeuser.ui.theme.darkYellow
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.UUID
@@ -112,6 +115,7 @@ fun CartScreen(modifier: Modifier = Modifier,navController: NavController, cartV
         mutableStateOf(false)
     }
     val keyboardController = LocalSoftwareKeyboardController.current
+    val coroutine = rememberCoroutineScope()
 
 
 
@@ -271,7 +275,10 @@ fun CartScreen(modifier: Modifier = Modifier,navController: NavController, cartV
                             cartViewModel.deleteProductFromCart(productItem.id!!)
                         },
                         onChangeQuantityClick = { product ->
-                            cartViewModel.addProductToCart(product)
+                            coroutine.launch {
+                                async { cartViewModel.addProductToCart(product) }.await()
+                            }
+                           // cartViewModel.addProductToCart(product)
                         }
                     )
 
